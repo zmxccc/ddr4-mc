@@ -163,22 +163,45 @@ AXI2DDR inst_AXI2DDR
 );
 initial begin
 
-	#10
-	S_AXI_ARESETN = 1'b1;
-@(negedge S_AXI_ACLK)begin		
+@(posedge S_AXI_ACLK)
+	 #0; S_AXI_ARESETN = 1'b0;
+@(posedge S_AXI_ACLK)
+	 #0; S_AXI_ARESETN = 1'b1;
+
+@(posedge S_AXI_ACLK)begin
+			 #0;	
 			S_AXI_AWVALID = 1'b1;
-			S_AXI_AWADDR  = 'd0;
+			S_AXI_AWADDR  = 'd10;
 			S_AXI_AWLEN = 3'b011;
 			S_AXI_AWSIZE = 3'b100;
 			S_AXI_AWBURST = 2'b01;
+
+			S_AXI_WVALID  = 1'b1;
 		//	data_in <= $random;	//生成8位随机数
 		end
-@(negedge S_AXI_ACLK)begin	
+		
+@(posedge S_AXI_ACLK)
+
+@(posedge S_AXI_ACLK)begin	
+	 #0;
 			S_AXI_AWVALID = 1'b0;
+			S_AXI_WDATA = $random;
+end
+    repeat (2) begin
+		@(posedge S_AXI_ACLK)	  #0;S_AXI_WDATA = $random;
+    end
+	@(posedge S_AXI_ACLK)begin	
+		 #0;
+			S_AXI_WDATA = $random;
+			S_AXI_WLAST = 1'b1;
+end
+@(posedge S_AXI_ACLK)begin	
+	 #0;
+			S_AXI_WVALID = 1'b0;
+			S_AXI_WLAST = 1'b0;
 
 end
-	end
-
+end
 //------------<设置时钟>----------------------------------------------
 always #10 S_AXI_ACLK = ~S_AXI_ACLK;			//读时钟周期20ns
  
