@@ -45,13 +45,13 @@ wire [DP_WD :0]fifo_cnt = (waddr[DP_WD] == raddr[DP_WD]) ? waddr[DP_WD-1:0] - ra
 wire [DP_WD :0]fifo_cnt_d = (waddr_d_h == raddr_d_h) ? waddr_d_l[DP_WD-1:0] - raddr_d_l[DP_WD-1:0]:
 				            (waddr_d_l[DP_WD-1:0] + DEPTH - raddr_d_l[DP_WD-1:0]);
 
-wire rempty = (fifo_cnt == 0);
+wire rempty_d = (fifo_cnt == 0);
 always @(posedge clk or negedge rst_n)begin
 	if(~rst_n)    rempty <= 0;
 	else if(rinc) rempty <= rempty_d;
 end
 
-wire wfull = (fifo_cnt == DEPTH);
+wire wfull_d = (fifo_cnt == DEPTH);
 always @(posedge clk or negedge rst_n)begin
 	if(~rst_n)    wfull <= 0;
 	else if(winc) wfull <= wfull_d;

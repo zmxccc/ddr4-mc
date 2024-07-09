@@ -1,11 +1,17 @@
 
-`timescale 1ns/1ns	//时间单位/精度
+/*`timescale 1ns/1ns	//时间单位/精度
  
 //------------<模块及端口声明>----------------------------------------
 module tb();
  
-parameter   DATA_WIDTH = 8  ;		//FIFO位宽
-parameter   DATA_DEPTH = 3 ;		//FIFO深度
+parameter DATAWIDTH = 128;
+parameter IDWIDTH   = 3;
+parameter ADDRSIZE  = 41;
+ 
+parameter integer C_S_AXI_ID_WIDTH		= 2		;
+	
+parameter integer C_S_AXI_DATA_WIDTH	= 128	;
+parameter integer C_S_AXI_ADDR_WIDTH	= 41		;
  
 reg							wr_clk		;				//写时钟
 reg							wr_rst_n	;       		//低电平有效的写复位信号
@@ -20,25 +26,10 @@ wire						empty		;				//空标志，高电平表示当前FIFO已被写满
 wire						full		;               //满标志，高电平表示当前FIFO已被读空
  
 //------------<例化被测试模块>----------------------------------------
-fifo
-#(
-	.DSIZE	(DATA_WIDTH),			//FIFO位宽
-    .ASIZE	(3)			//FIFO深度
-)
-async_fifo_inst(
-	.wclk		(wr_clk		),
-	.wrst_n 	(wr_rst_n	),
-	.winc		(wr_en		),
-	.wdata	    (data_in	),	
-	.rclk		(rd_clk		),               
-	.rrst_n	    (rd_rst_n	),	
-	.rinc		(rd_en		),	
-	.rdata	    (data_out	),
+AXI2DDR AXI2DDR_INST (
 	
-	.rempty		(empty		),		
-	.wfull		(full		)
-);
 
+)
 //------------<设置初始测试条件>----------------------------------------
 initial begin
 	rd_clk = 1'b0;					//初始时钟为0
@@ -100,3 +91,4 @@ end
 
 
 endmodule
+*/
